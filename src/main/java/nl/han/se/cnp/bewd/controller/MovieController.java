@@ -1,13 +1,14 @@
 package nl.han.se.cnp.bewd.controller;
 
 import nl.han.se.cnp.bewd.domain.Movie;
+import nl.han.se.cnp.bewd.exceptions.MovieNotFoundException;
 import nl.han.se.cnp.bewd.repository.MovieList;
 import nl.han.se.cnp.bewd.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/movies")
@@ -27,7 +28,19 @@ public class MovieController {
     @GetMapping("/")
     public Movie getMovieById(@RequestParam("id") String id) {
 
-            Movie movie = movieService.getMovieById(id);
-            return movie;
+        return movieService.getMovieById(id);
     }
+
+    @GetMapping("/{id}")
+    public Movie getMovieByIdInUrl(@PathVariable("id") String id) {
+        return movieService.getMovieById(id);
+    }
+//
+//    @ExceptionHandler(MovieNotFoundException.class)
+//    public ResponseEntity<String> handleMovieNotFoundException(MovieNotFoundException ex) {
+//        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+//    }
+
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    void onMovieNotFoundExc(MovieNotFoundException e) {}
 }
